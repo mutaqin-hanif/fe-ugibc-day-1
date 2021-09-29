@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Button, Row } from "react-bootstrap";
 import UserList from "../components/user-list";
 
-export default function Pagination({ data, pageLimit, dataLimit }) {
+export default function Pagination({ data, dataLimit, pageLimit }) {
   const [pages] = useState(Math.round(data.length / dataLimit));
   const [currentPage, setCurrentPage] = useState(1);
 
@@ -20,15 +20,25 @@ export default function Pagination({ data, pageLimit, dataLimit }) {
   }
 
   const getPaginatedData = () => {
-    const startIndex = currentPage * dataLimit - dataLimit;
+    const startIndex =
+      dataLimit < data.length
+        ? currentPage * dataLimit - dataLimit
+        : currentPage * data.length - data.length;
     const endIndex = startIndex + dataLimit;
-    return data.slice(startIndex, endIndex);
+    return dataLimit < data.length ? data.slice(startIndex, endIndex) : data;
   };
 
   const getPaginationGroup = () => {
-    let start = Math.floor((currentPage - 1) / pageLimit) * pageLimit;
-    console.log(new Array(pageLimit).fill().map((_, idx) => start + idx + 1));
-    return new Array(pageLimit).fill().map((_, idx) => start + idx + 1);
+    let altPageLimit =
+      dataLimit < data.length ? parseInt(data.length / dataLimit) : data.length;
+    let start =
+      altPageLimit > pageLimit
+        ? Math.floor((currentPage - 1) / pageLimit) * pageLimit
+        : Math.floor((currentPage - 1) / altPageLimit) * altPageLimit;
+    console.log(altPageLimit, start, data.length);
+    return new Array(altPageLimit > pageLimit ? pageLimit : altPageLimit)
+      .fill()
+      .map((_, id) => start + id + 1);
   };
 
   return (
