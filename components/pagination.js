@@ -35,7 +35,6 @@ export default function Pagination({ data, dataLimit, pageLimit }) {
       altPageLimit > pageLimit
         ? Math.floor((currentPage - 1) / pageLimit) * pageLimit
         : Math.floor((currentPage - 1) / altPageLimit) * altPageLimit;
-    console.log(altPageLimit, start, data.length);
     return new Array(altPageLimit > pageLimit ? pageLimit : altPageLimit)
       .fill()
       .map((_, id) => start + id + 1);
