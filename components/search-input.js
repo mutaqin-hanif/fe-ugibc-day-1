@@ -13,7 +13,7 @@ function SearchInput({ product, setProduct }) {
       })();
     }
     setProduct(
-      product.filter((item) => item.title.toLowerCase().search(value) > 0)
+      product.filter((item) => item.title.toLowerCase().search(value) !== -1)
     );
   };
 
